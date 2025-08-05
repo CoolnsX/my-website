@@ -1,6 +1,6 @@
 +++
 title = "Server Setup: Media Server"
-date = 2025-08-08
+date = 2025-08-05
 extra.image = "assets/starrs-jellyfin.png"
 description = "Streaming Without Subscriptions"
 +++
