@@ -15,7 +15,7 @@
     {{ page.title }}
 </h1>
 
-<p class="subtitle">
+<p class="subtitle text-center">
     {% if page.updated %}
     Last Updated:
     <strong class="text-sky-400">
@@ -40,7 +40,7 @@
         {% set image_url = get_url(path=image) %}
     {% endif %}
 
-    <div class="flex justify-center my-4">
+    <div class="flex justify-center my-4 mx-6">
         <img
             src="{{ image_url | safe }}"
             alt="{{ page.title }}"
@@ -52,7 +52,7 @@
     </div>
 {% endif %}
 
-<div class="mt-6 text-xl text-gray-300">
+<div class="mt-6 mx-6 text-lg text-gray-300">
     {{ page.content | safe }}
 </div>
 {% endblock content %}

@@ -7,11 +7,11 @@
 {% endblock head_extra %}
 
 {% block content %}
-<h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+<h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-center">
     HI <br> I'm Tanveer Ahmed Ansari <br>Full Stack Developer & Self-Taught SysAdmin.
 </h1>
 
-<p class="mt-6 text-lg text-gray-300">
+<p class="mt-6 text-lg text-gray-300 text-center">
     I build performant, secure, and maintainable web applications using
     <span class="text-white font-semibold">Laravel</span>. Beyond web
     development, I handle Linux servers, automate deployment pipelines, and
@@ -20,17 +20,17 @@
     <span class="font-semibold">Docker</span>.
 </p>
 
-<p class="mt-4 text-lg text-gray-300">
+<p class="mt-4 text-lg text-gray-300 text-center">
     From building REST APIs and scalable backends to managing uptime and DevOps
     workflows — I care deeply about clean code, automation, and reliability.
 </p>
 
-<p class="mt-4 text-lg text-gray-300">
+<p class="mt-4 text-lg text-gray-300 text-center">
     My goal? Deliver fast, secure, and elegant solutions that make an impact —
     whether for a side project, startup, or enterprise system.
 </p>
 
-<div class="pt-6">
+<div class="pt-6 text-center">
     <a
         href="{{ get_url(path='@/blog/_index.md') }}"
         class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow transition"
@@ -51,7 +51,7 @@
 
 <hr class="my-10 border-gray-700" />
 
-<div>
+<div class="text-center">
     <h2 class="text-2xl font-bold mb-4">📬 Get in Touch</h2>
     <p class="text-lg text-gray-300 mb-4">
         I'm always open to collaborating, freelancing, or just chatting tech.
@@ -62,7 +62,7 @@
             <a
                 href="#"
                 class="obfuscated-link text-blue-400 hover:underline text-lg"
-                data-encoded="bWVAY29vbGFucy5kZXY="
+                data-encoded="bWVbYXRdY29vbGFuc1tkb3RdZGV2"
                 >Loading...</a
             >
         </li>
@@ -110,10 +110,8 @@
 
         const decoded = atob(encoded);
 
-        // Determine if email, phone, or URL by simple checks:
-        if (decoded.includes("@") && !decoded.startsWith('http')) {
-            // Email
-            link.href = `mailto:${decoded}`;
+        if (!decoded.startsWith('http')) {
+            link.href = `#`;
             link.textContent = decoded;
             return;
         }

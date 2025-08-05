@@ -4,4 +4,4 @@
 {%- set amount_in_usd = amount * usd_rate -%}
 {%- set amount_in_eur = amount * eur_rate -%}
 
-₹{{ amount }} (${{ amount_in_usd | round }} or €{{ amount_in_eur | round }})
+₹{{ amount | num_format }} (${{ amount_in_usd | round }} or €{{ amount_in_eur | round }})

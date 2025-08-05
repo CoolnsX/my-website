@@ -7,7 +7,7 @@
         <link rel="icon" href="/assets/favicon.ico">
         <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
         {% block rss %}
-          <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
         {% endblock %}
         <link
             rel="stylesheet"
@@ -155,7 +155,7 @@
                 class="container mx-auto lg:px-6 sm:px-4"
             >
                 <div
-                    class="p-8 rounded-2xl bg-gray-900/80 border border-gray-800 shadow-xl backdrop-blur-md text-center text-sm"
+                    class="p-8 rounded-2xl bg-gray-900/80 border border-gray-800 shadow-xl backdrop-blur-md text-sm"
                 >
                 {% block content %}{% endblock content %}
                 </div>
