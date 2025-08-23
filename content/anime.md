@@ -2,7 +2,7 @@
 title = "Anime Tracker"
 description = "Comprehensive list of anime I've watched with season progress."
 date = 2025-06-08
-updated = 2025-07-03
+updated = 2025-08-23
 +++
 
 {{ subheading(text="Currently Watching / Tracking") }}
@@ -10,7 +10,7 @@ updated = 2025-07-03
 {{ table(
       heading=["Name", "Current Season", "Status"],
       rows=[
-          ["Gintama", "2", "Watching"],
+          ["Gintama", "3", "Watching"],
           ["Grand Blue", "2", "Watching"],
           ["Seishun Buta Yarou wa Santa Claus no Yume wo Minai (Bunny girl senpai sequel)", "2", "Watching"],
           ["Sono Bisque Doll wa Koi wo Suru", "2", "Watching"],
