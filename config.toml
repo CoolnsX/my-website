@@ -22,7 +22,6 @@ feed_filenames = ['rss.xml']
 author = "Coolans"
 
 [markdown]
-highlight_code = true
 
 # Whether external links are to be opened in a new tab
 # If this is true, a `rel="noopener"` will always automatically be added for security reasons

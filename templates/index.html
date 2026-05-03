@@ -1,14 +1,11 @@
-{% extends "base.html" %}
-
-{% block title %}Home{% endblock title %}
-
-{% block head_extra %}
-<meta name="description" content="Coolans Portfolio and Blog Website.">
-{% endblock head_extra %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Home{% endblock title %} {% block
+head_extra %}
+<meta name="description" content="Coolans Portfolio and Blog Website." />
+{% endblock head_extra %} {% block content %}
 <h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-center">
-    HI <br> I'm Tanveer Ahmed Ansari <br>Full Stack Developer & Self-Taught SysAdmin.
+    HI <br />
+    I'm Tanveer Ahmed Ansari <br />Full Stack Laravel Developer & Self-Taught
+    SysAdmin.
 </h1>
 
 <p class="mt-6 text-lg text-gray-300 text-center">
@@ -44,7 +41,11 @@
             stroke="currentColor"
             stroke-width="2"
         >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5l7 7-7 7"
+            />
         </svg>
     </a>
 </div>
@@ -110,7 +111,7 @@
 
         const decoded = atob(encoded);
 
-        if (!decoded.startsWith('http')) {
+        if (!decoded.startsWith("http")) {
             link.href = `#`;
             link.textContent = decoded;
             return;
@@ -118,8 +119,8 @@
 
         link.href = decoded;
 
-        const trimmed = decoded.endsWith('/') ? decoded.slice(0, -1) : decoded;
-        const parts = trimmed.split('/');
+        const trimmed = decoded.endsWith("/") ? decoded.slice(0, -1) : decoded;
+        const parts = trimmed.split("/");
         const lastSegment = parts[parts.length - 1] || decoded;
         link.textContent = lastSegment;
     });
