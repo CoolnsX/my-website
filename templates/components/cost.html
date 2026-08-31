@@ -1,0 +1,9 @@
+{% component cost(amount: integer) %}
+    {%- set usd_rate = 0.011 -%}
+    {%- set eur_rate = 0.009 -%}
+
+    {%- set amount_in_usd = amount * usd_rate -%}
+    {%- set amount_in_eur = amount * eur_rate -%}
+
+    ₹{{ amount | num_format }} (${{ amount_in_usd | round }} or €{{ amount_in_eur | round }})
+{% endcomponent cost %}

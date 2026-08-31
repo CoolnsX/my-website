@@ -1,0 +1,3 @@
+{% component link(href, text) %}
+<a {% if href is starting_with(pat="http") %}target="_blank"{% endif %} rel="noopener noreferrer" href="{{href}}" class="text-blue-400">{{text}}</a>
+{% endcomponent link %}

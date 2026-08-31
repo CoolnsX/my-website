@@ -34,7 +34,7 @@
 
 {% if page.extra.image %}
     {% set image = page.extra.image %}
-    {% if image is starting_with("http") %}
+    {% if image is starting_with(pat="http") %}
         {% set image_url = image %}
     {% else %}
         {% set image_url = get_url(path=image) %}

@@ -1,7 +1,0 @@
-{%- set usd_rate = 0.012 -%}
-{%- set eur_rate = 0.010 -%}
-
-{%- set amount_in_usd = amount * usd_rate -%}
-{%- set amount_in_eur = amount * eur_rate -%}
-
-₹{{ amount | num_format }} (${{ amount_in_usd | round }} or €{{ amount_in_eur | round }})

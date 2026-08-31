@@ -5,28 +5,21 @@ extra.image = "assets/starrs-jellyfin.png"
 description = "Streaming Without Subscriptions"
 +++
 
-{% paragraph(class="m-8") %}
 In the 90s, people started buying movies, shows, and music with their own money and wanted to preserve their collections. To protect their purchases from physical damage or data rot, many began ripping their media into digital formats. As the internet expanded in the early 2000s, people started sharing these digital files with others through various methods — one of the most popular being torrents. This caught the attention of the film and music industries, leading to a widespread crackdown on piracy. In response to the growing demand for convenient, legal access to content, Netflix launched a streaming service that offered movies and shows at affordable prices while handling licensing fees with content owners. As internet speeds improved, major media companies saw the potential and began pulling their content from Netflix to launch their own platforms. This led to a fragmented market where consumers now need multiple subscriptions just to watch their favorite shows
-{% end %}
 
-{% paragraph(class="m-8") %}
 The issue doesn't end there. Streaming services control access to content, if they remove a show or movie from their servers, you lose the ability to watch it, even if it was part of your watchlist. A similar shift has occurred in gaming. In the past, buying a game meant owning a physical copy that you could keep forever. Today, digital game purchases typically give you a license to download and play the game. If the developer or store decides to remove it, you can lose access entirely, meaning you don’t truly own the game, you're just borrowing it under certain conditions. While online streaming services and digital stores have had their ups and downs, many people still choose to support their favorite shows and movies by purchasing them on physical media and creating digital backups to preserve them. However, some also share these backups with others, which continues to fuel the fire of digital piracy.
-{% end %}
 
-{% paragraph(class="m-8") %}
 **Enter media automation**, a set of services and tools that help users organize and access their personal media collections from anywhere in the world, in whatever way they prefer.
-{% end %}
 
-{{ subheading(text="Radarr") }}
+{{ <subheading text="Radarr"/> }}
 
-{% paragraph(class="m-8") %}
 Radarr is Selfhost Application that is used to organise and Manage Movies, it also helps in tracking for upcoming movies and movies collection.
 
 There are plenty of guides on Internet for setting this up using Docker, I am helping for setting up using Podman, since there are not that much guides on it.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/radarr.container") %}
-```ini
+{{ <filename file="~/.config/containers/systemd/radarr.container"/> }}
+
+```ini,linenos
 [Unit]
 Description=Radarr Container
 
@@ -52,15 +45,13 @@ TimeoutStartSec=300
 # this will restart the container on boot, you have to run "loginctl enable-linger $USER" for this to be worky.
 WantedBy=default.target
 ```
-{% end %}
 
-{{ subheading(text="Sonarr") }}
+{{ <subheading text="Sonarr"/> }}
 
-{% paragraph(class="m-8") %}
 Sonarr is used to organise and Manage TV shows and anime, it also helps in tracking for upcoming seasons of shows.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/sonarr.container") %}
+{{ <filename file="~/.config/containers/systemd/sonarr.container"/> }}
+
 ```ini
 [Unit]
 Description=Sonarr Container
@@ -87,15 +78,13 @@ TimeoutStartSec=300
 # this will restart the container on boot, you have to run "loginctl enable-linger $USER" for this to be worky.
 WantedBy=default.target
 ```
-{% end %}
 
-{{ subheading(text="Prowlarr") }}
+{{ <subheading text="Prowlarr"/> }}
 
-{% paragraph(class="m-8") %}
 Prowlarr is used by sonarr and radarr, to search for shows and movies.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/prowlarr.container") %}
+{{ <filename file="~/.config/containers/systemd/prowlarr.container"/> }}
+
 ```ini
 [Unit]
 Description=Prowlarr Container
@@ -122,15 +111,13 @@ TimeoutStartSec=300
 # this will restart the container on boot, you have to run "loginctl enable-linger $USER" for this to be worky.
 WantedBy=default.target
 ```
-{% end %}
 
-{{ subheading(text="Bazarr") }}
+{{ <subheading text="Bazarr"/> }}
 
-{% paragraph(class="m-8") %}
 Bazarr is used to manage subtitles, it checks for content in directory and also communicate to sonarr and radarr via their APIs for new content to automatically download subtitles.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/bazarr.container") %}
+{{ <filename file="~/.config/containers/systemd/bazarr.container"/> }}
+
 ```ini
 [Unit]
 Description=Bazarr Container
@@ -157,15 +144,13 @@ TimeoutStartSec=300
 # this will restart the container on boot, you have to run "loginctl enable-linger $USER" for this to be worky.
 WantedBy=default.target
 ```
-{% end %}
 
-{{ subheading(text="Jellyfin") }}
+{{ <subheading text="Jellyfin"/> }}
 
-{% paragraph(class="m-8") %}
 Jellyfin is used to stream media from anywhere and on any devices as long as it has internet access.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/jellyfin.container") %}
+{{ <filename file="~/.config/containers/systemd/jellyfin.container"/> }}
+
 ```ini
 [Unit]
 Description=Jellyfin Container
@@ -196,15 +181,13 @@ TimeoutStartSec=300
 # this will restart the container on boot, you have to run "loginctl enable-linger $USER" for this to be worky.
 WantedBy=default.target
 ```
-{% end %}
 
-{{ subheading(text="qBittorrent") }}
+{{ <subheading text="qBittorrent"/> }}
 
-{% paragraph(class="m-8") %}
 If you know torrent, you probably know this app.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/qBittorrent.container") %}
+{{ <filename file="~/.config/containers/systemd/qbittorrent.container"/> }}
+
 ```ini
 [Unit]
 Description=qBittorrent Container
@@ -234,15 +217,13 @@ TimeoutStartSec=300
 # this will restart the container on boot, you have to run "loginctl enable-linger $USER" for this to be worky.
 WantedBy=default.target
 ```
-{% end %}
 
-{{ subheading(text="Important") }}
+{{ <subheading text="Important"/> }}
 
-{% paragraph(class="m-8") %}
 Podman has this feature called Pods, which can group multiple containers and create a virtual system in which container can access to each other using localhost, instead of their name. This also helps in which port needs to be bind with host for outside access.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/starrs.pod") %}
+{{ <filename file="~/.config/containers/systemd/starrs.pod"/> }}
+
 ```ini
 [Unit]
 Description=STARRs Pod (Radarr, Sonarr, Bazarr, Prowlarr, qBittorrent, Jellyfin)
@@ -264,27 +245,21 @@ PodName=starrs
 # or you can make the pod network use the host network.
 Network=host
 ```
-{% end %}
 
-{% paragraph(class="m-8") %}
 And the ENV file, How can we forget that.
-{% end %}
 
-{% code(file="~/.config/containers/systemd/.env") %}
+{{ <filename file="~/.config/containers/systemd/.env"/> }}
+
 ```sh
 PUID=0 # set to 0 to run with podman rootless without uidmap
 PGID=0 # set to 0 to run with podman rootless without uidmap
 TZ=Etc/UTC
 DATA=/path/to/data
 ```
-{% end %}
 
-{% paragraph(class="m-8") %}
 The directory structure should be like this.
-{% end %}
 
-{% code() %}
-```
+```sh
 data
 ├── downloads
 │ ├── complete
@@ -296,4 +271,3 @@ data
 │ └── tv
 └── watch
 ```
-{% end %}
