@@ -4,10 +4,15 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{% block title %}{% endblock title %} - Coolans</title>
-        <link rel="icon" href="/assets/favicon.ico">
-        <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+        <link rel="icon" href="/assets/favicon.ico" />
+        <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
         {% block rss %}
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS"
+            href="{{ get_url(path='rss.xml', trailing_slash=false) }}"
+        />
         {% endblock %}
         <link
             rel="stylesheet"
@@ -15,7 +20,8 @@
         />
         <script>
             function toggleMobileMenu() {
-                const toggleButton = document.getElementById("toggle-menu-button");
+                const toggleButton =
+                    document.getElementById("toggle-menu-button");
                 const mobileMenu = document.getElementById("mobile-menu");
                 const svg = toggleButton.querySelector("svg");
                 mobileMenu.classList.toggle("hidden");
@@ -24,13 +30,14 @@
                     "d",
                     isMenuOpen
                         ? "M6 18L18 6M6 6l12 12" // X icon
-                        : "M4 6h16M4 12h16M4 18h16" // Hamburger icon
+                        : "M4 6h16M4 12h16M4 18h16", // Hamburger icon
                 );
             }
 
             // Hide menu on outside click
-            document.addEventListener("click", function(event) {
-                const toggleButton = document.getElementById("toggle-menu-button");
+            document.addEventListener("click", function (event) {
+                const toggleButton =
+                    document.getElementById("toggle-menu-button");
                 const mobileMenu = document.getElementById("mobile-menu");
                 const isClickInsideMenu = mobileMenu.contains(event.target);
                 const isClickInsideButton = toggleButton.contains(event.target);
@@ -39,20 +46,21 @@
                     mobileMenu.classList.add("hidden");
                     const svg = toggleButton.querySelector("svg");
                     svg.querySelector("path").setAttribute(
-                        "d","M4 6h16M4 12h16M4 18h16"
+                        "d",
+                        "M4 6h16M4 12h16M4 18h16",
                     );
                 }
             });
 
             function openFullscreenImage(imgElement) {
-                const overlay = document.createElement('div');
+                const overlay = document.createElement("div");
                 overlay.className = `
                     fixed inset-0 bg-black bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-50
                     transition-opacity duration-300 ease-in-out
                 `;
                 overlay.onclick = () => overlay.remove();
 
-                const fullscreenImage = document.createElement('img');
+                const fullscreenImage = document.createElement("img");
                 fullscreenImage.src = imgElement.src;
                 fullscreenImage.alt = imgElement.alt;
                 fullscreenImage.className = `
@@ -79,32 +87,283 @@
                 lastScroll = currentScroll;
             });
         </script>
-        <link rel="preload" as="image" href="/assets/background.webp" type="image/webp"/>
+        <script>
+            async function updateListenBrainz() {
+                const content = document.getElementById("listenbrainz-content");
+                const button = document.getElementById("listenbrainz-button");
+
+                try {
+                    const res = await fetch(
+                        "https://api.listenbrainz.org/1/user/coolans/playing-now",
+                        { cache: "no-store" },
+                    );
+
+                    if (!res.ok) throw new Error("API error");
+
+                    const data = await res.json();
+                    const listen = data?.payload?.listens?.[0];
+
+                    if (!listen?.playing_now) {
+                        button.classList.remove("text-green-400");
+                        button.classList.add("text-gray-400");
+
+                        content.innerHTML = `
+                            <div class="p-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-20 h-20 rounded-xl bg-gray-800
+                                                flex items-center justify-center shrink-0">
+                                        <svg
+                                            class="w-8 h-8 text-gray-600"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path d="M9 18V5l12-2v13" />
+                                            <circle cx="6" cy="18" r="3" />
+                                            <circle cx="18" cy="16" r="3" />
+                                        </svg>
+                                    </div>
+
+                                    <div>
+                                        <div class="font-medium text-gray-300">
+                                            Not playing
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            Nothing playing right now.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        return;
+                    }
+
+                    const track = listen.track_metadata;
+                    const info = track.additional_info || {};
+
+                    const name = escapeHtml(
+                        track.track_name || "Unknown track",
+                    );
+                    const artist = escapeHtml(
+                        track.artist_name || "Unknown artist",
+                    );
+                    const release = escapeHtml(track.release_name || "");
+
+                    const cover = `https://coverartarchive.org/release/${info.release_mbid}/front-250`;
+
+                    content.innerHTML = `
+                        <div class="p-4">
+                            <div class="flex gap-4">
+                                <img
+                                    src="${cover}"
+                                    alt="${release}"
+                                    class="w-20 h-20 shrink-0 rounded-xl
+                                           object-cover bg-gray-800 shadow-lg"
+                                >
+
+                                <div class="min-w-0 flex-1 flex flex-col justify-center">
+                                    <div class="text-xs text-green-400 font-medium mb-1">
+                                        ● Playing now
+                                    </div>
+
+                                    <div
+                                        class="font-semibold text-white truncate"
+                                        title="${name}"
+                                    >
+                                        ${name}
+                                    </div>
+
+                                    <div
+                                        class="text-sm text-gray-400 truncate mt-1"
+                                        title="${artist}"
+                                    >
+                                        ${artist}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    button.classList.remove("text-gray-400", "text-gray-600");
+                    button.classList.add("text-green-400");
+                } catch (error) {
+                    console.error("ListenBrainz:", error);
+
+                    button.classList.remove("text-green-400");
+                    button.classList.add("text-gray-600");
+
+                    content.innerHTML = `
+                        <div class="p-4 text-sm text-gray-400">
+                            ListenBrainz unavailable.
+                        </div>
+                    `;
+                }
+            }
+
+            function escapeHtml(value) {
+                const div = document.createElement("div");
+                div.textContent = value ?? "";
+                return div.innerHTML;
+            }
+
+            function toggleListenBrainz(event) {
+                event.stopPropagation();
+
+                const popup = document.getElementById("listenbrainz-popup");
+                const button = document.getElementById("listenbrainz-button");
+
+                const hidden = popup.classList.toggle("hidden");
+
+                button.setAttribute("aria-expanded", String(!hidden));
+            }
+
+            document.addEventListener("click", (event) => {
+                const container = document.getElementById("listenbrainz");
+                const popup = document.getElementById("listenbrainz-popup");
+                const button = document.getElementById("listenbrainz-button");
+
+                if (container && !container.contains(event.target)) {
+                    popup.classList.add("hidden");
+                    button.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            document.addEventListener("DOMContentLoaded", () => {
+                updateListenBrainz();
+                setInterval(updateListenBrainz, 15000);
+            });
+        </script>
+        <link
+            rel="preload"
+            as="image"
+            href="/assets/background.webp"
+            type="image/webp"
+        />
         <style>
-          .bg-image {
-            background-image: url('/assets/background.webp');
-          }
+            .bg-image {
+                background-image: url("/assets/background.webp");
+            }
+        </style>
+        <style>
+            /* Mobile */
+            @media (max-width: 639px) {
+                #listenbrainz-popup {
+                    position: fixed !important;
+
+                    /* Put below header */
+                    top: 4.5rem !important;
+
+                    /* Center in viewport */
+                    left: 50% !important;
+                    right: auto !important;
+
+                    transform: translateX(-50%) !important;
+
+                    /* Never wider than screen */
+                    width: min(20rem, calc(100vw - 1rem)) !important;
+
+                    margin: 0 !important;
+                }
+            }
         </style>
         {% block head_extra %}{% endblock head_extra %}
     </head>
 
-    <body class="min-h-screen flex flex-col bg-black text-white relative transition-colors duration-300">
+    <body
+        class="min-h-screen flex flex-col bg-black text-white relative transition-colors duration-300"
+    >
         <!-- Blurred Background Image -->
         <div class="fixed inset-0 -z-10 bg-image bg-cover bg-center"></div>
 
         <!-- Top Navigation -->
-        <header id="top-header" class="sticky top-0 z-50 bg-transparent pt-2 transition-all duration-300 ease-in-out">
+        <header
+            id="top-header"
+            class="sticky top-0 z-50 bg-transparent pt-2 transition-all duration-300 ease-in-out"
+        >
             <div class="container mx-auto px-4 flex justify-center">
                 <!-- Entire Header Island -->
-                <div class="w-full max-w-screen-2xl flex justify-between items-center px-6 py-3">
+                <div
+                    class="w-full max-w-screen-2xl flex justify-between items-center px-6 py-3"
+                >
+                    <!-- Left -->
+                    <div class="flex items-center gap-3">
+                        <!-- Logo -->
+                        <a
+                            href="/"
+                            class="text-xl font-bold text-white rounded-2xl px-6 py-2.5 bg-gray-900/70 border border-gray-800 shadow-xl backdrop-blur-md"
+                        >
+                            Coolans
+                        </a>
 
-                    <!-- Logo -->
-                    <a href="/" class="text-xl font-bold text-white rounded-2xl px-6 py-2.5 bg-gray-900/70 border border-gray-800 shadow-xl backdrop-blur-md">
-                        Coolans
-                    </a>
+                        <!-- ListenBrainz -->
+                        <div id="listenbrainz" class="relative">
+                            <button
+                                id="listenbrainz-button"
+                                type="button"
+                                onclick="toggleListenBrainz(event)"
+                                class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-900/70 border border-gray-800 text-gray-400 hover:text-green-400 shadow-xl backdrop-blur-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                aria-label="ListenBrainz status"
+                                aria-expanded="false"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M9 18V5l12-2v13" />
+                                    <circle cx="6" cy="18" r="3" />
+                                    <circle cx="18" cy="16" r="3" />
+                                </svg>
+                            </button>
+
+                            <!-- Popup -->
+                            <div
+                                id="listenbrainz-popup"
+                                class="hidden mt-1 fixed w-80 max-w-[calc(100vw-1rem)] rounded-2xl bg-gray-900/95 border border-gray-800 shadow-2xl backdrop-blur-xl overflow-hidden z-[9999]"
+                            >
+                                <!-- Dynamic song area ONLY -->
+                                <div id="listenbrainz-content">
+                                    <div class="p-4 text-sm text-gray-400">
+                                        Loading...
+                                    </div>
+                                </div>
+
+                                <!-- Static separator -->
+                                <div class="border-t border-gray-700"></div>
+
+                                <!-- Static footer -->
+                                <div
+                                    class="px-4 py-3 flex items-center justify-between text-xs"
+                                >
+                                    <a
+                                        href="https://listenbrainz.org/user/coolans/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="text-gray-300 hover:text-white transition-colors"
+                                    >
+                                        coolans
+                                    </a>
+
+                                    <a
+                                        href="https://listenbrainz.org"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="text-gray-500 hover:text-green-400 transition-colors"
+                                    >
+                                        via ListenBrainz
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Mobile Menu Button -->
-                    <button id="toggle-menu-button"
+                    <button
+                        id="toggle-menu-button"
                         class="sm:hidden px-3 py-3 rounded-lg text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-900/70 border border-gray-800 shadow-xl backdrop-blur-md"
                         aria-label="Toggle menu"
                         onclick="toggleMobileMenu()"
@@ -128,19 +387,38 @@
                         class="hidden sm:flex sm:static absolute right-10 top-full px-6 rounded-2xl bg-gray-900/70 border border-gray-800 shadow-xl backdrop-blur-md space-x-6 sm:space-x-6 flex-col sm:flex-row max-w-screen text-gray-300 sm:items-center"
                     >
                         <li>
-                            <a href="/" class="hover:text-blue-400 block py-3">Home</a>
+                            <a href="/" class="hover:text-blue-400 block py-3"
+                                >Home</a
+                            >
                         </li>
                         <li>
-                            <a href="/blog/" class="hover:text-blue-400 block py-3">Blogs</a>
+                            <a
+                                href="/blog/"
+                                class="hover:text-blue-400 block py-3"
+                                >Blogs</a
+                            >
                         </li>
                         <li>
-                            <a href="/anime/" class="hover:text-blue-400 block py-3">Anime</a>
+                            <a
+                                href="/anime/"
+                                class="hover:text-blue-400 block py-3"
+                                >Anime</a
+                            >
                         </li>
                         <li>
-                            <a href="/rss.xml" class="text-orange-400 py-3 flex">
+                            <a
+                                href="/rss.xml"
+                                class="text-orange-400 py-3 flex"
+                            >
                                 RSS
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1 fill-current" viewBox="0 0 24 24">
-                                    <path d="M4.26 17.63a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26zM2 10.92v2.15a9 9 0 0 1 9 9h2.15a11.16 11.16 0 0 0-11.15-11.15zm0-5.3v2.15a14.32 14.32 0 0 1 14.31 14.3h2.15A16.47 16.47 0 0 0 2 5.62z"/>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5 ml-1 fill-current"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        d="M4.26 17.63a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26zM2 10.92v2.15a9 9 0 0 1 9 9h2.15a11.16 11.16 0 0 0-11.15-11.15zm0-5.3v2.15a14.32 14.32 0 0 1 14.31 14.3h2.15A16.47 16.47 0 0 0 2 5.62z"
+                                    />
                                 </svg>
                             </a>
                         </li>
@@ -151,13 +429,11 @@
 
         <!-- Main Content Section -->
         <main class="flex-grow section py-10 relative z-10 rounded-2xl">
-            <div
-                class="container mx-auto lg:px-6 sm:px-4"
-            >
+            <div class="container mx-auto lg:px-6 sm:px-4">
                 <div
                     class="p-8 rounded-2xl bg-gray-900/80 border border-gray-800 shadow-xl backdrop-blur-md text-sm"
                 >
-                {% block content %}{% endblock content %}
+                    {% block content %}{% endblock content %}
                 </div>
             </div>
         </main>
@@ -168,7 +444,8 @@
                 <div
                     class="px-6 py-2 rounded-2xl bg-gray-900/80 border border-gray-800 shadow-xl backdrop-blur-md text-center text-sm text-gray-400"
                 >
-                    {{ now() | date(format="%Y") }} Coolans. Exhausted Presevance. No Rights Reserved.
+                    {{ now() | date(format="%Y") }} Coolans. Exhausted
+                    Presevance. No Rights Reserved.
                 </div>
             </div>
         </footer>

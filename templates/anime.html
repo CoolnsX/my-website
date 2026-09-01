@@ -1,7 +1,5 @@
 {% extends "base.html" %} {% block title %}Anime Tracker{% endblock title %} {%
-block head_extra %}
-<link rel="preconnect" href="https://note.coolans.dev" />
-{% if page.description %}
+block head_extra %} {% if page.description %}
 <meta name="description" content="{{ page.description | safe }}" />
 {% endif %} {% endblock head_extra %} {% block content %}
 <h1 class="text-4xl md:text-5xl font-extrabold text-white text-center">
@@ -47,7 +45,7 @@ block head_extra %}
 </div>
 
 <script>
-    const API_BASE = "https://note.coolans.dev/api/v1/memos";
+    const API_BASE = "{{ config.base_url }}/api";
 
     (async () => {
         const trackContainer = document.getElementById("track-table");
@@ -55,8 +53,8 @@ block head_extra %}
 
         try {
             const [trackResponse, completedResponse] = await Promise.all([
-                fetch(`${API_BASE}/f6gpF6nFPrLGBqbQGsadAE`),
-                fetch(`${API_BASE}/CCzLiikyWpygWmUrvtHYGN`),
+                fetch(`${API_BASE}/anime-track`),
+                fetch(`${API_BASE}/anime-completed`),
             ]);
 
             if (!trackResponse.ok) {
