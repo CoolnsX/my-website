@@ -151,7 +151,7 @@
                     );
                     const release = escapeHtml(track.release_name || "");
 
-                    const cover = `https://coverartarchive.org/release/${info.release_mbid}/front-250`;
+                    const cover = `https://coverartarchive.org/release-group/${info.release_group_mbid}/front-250`;
 
                     content.innerHTML = `
                         <div class="p-4">
@@ -161,6 +161,7 @@
                                     alt="${release}"
                                     class="w-20 h-20 shrink-0 rounded-xl
                                            object-cover bg-gray-800 shadow-lg"
+                                    loading="lazy"
                                 >
 
                                 <div class="min-w-0 flex-1 flex flex-col justify-center">
@@ -245,8 +246,7 @@
             .bg-image {
                 background-image: url("/assets/background.webp");
             }
-        </style>
-        <style>
+
             /* Mobile */
             @media (max-width: 639px) {
                 #listenbrainz-popup {
