@@ -376,12 +376,30 @@
                             <!-- Popup -->
                             <div
                                 id="listenbrainz-popup"
-                                class="hidden mt-1 fixed w-80 max-w-[calc(100vw-1rem)] rounded-2xl bg-gray-900/95 border border-gray-800 shadow-2xl backdrop-blur-xl overflow-hidden z-[9999]"
+                                class="hidden mt-1 fixed w-80 max-w-[calc(100vw-1rem)] rounded-2xl bg-gray-900/70 border border-gray-800 shadow-2xl backdrop-blur-xl overflow-hidden z-[9999]"
                             >
                                 <!-- Dynamic song area ONLY -->
                                 <div id="listenbrainz-content">
                                     <div class="p-4 text-sm text-gray-400">
-                                        Loading...
+                                        <svg
+                                            class="w-4 h-4 animate-spin"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="9"
+                                                stroke="currentColor"
+                                                stroke-width="3"
+                                                class="opacity-25"
+                                            />
+                                            <path
+                                                d="M21 12a9 9 0 0 0-9-9"
+                                                stroke="currentColor"
+                                                stroke-width="3"
+                                            />
+                                        </svg>
                                     </div>
                                 </div>
 
