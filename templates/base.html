@@ -110,7 +110,7 @@
                         lastStatus = "not-playing";
                         lastRecordingMbid = null;
 
-                        button.classList.remove("text-green-400");
+                        button.classList.remove("text-blue-400");
                         button.classList.add("text-gray-400");
 
                         content.innerHTML = `
@@ -191,7 +191,7 @@
                                 >
 
                                 <div class="min-w-0 flex-1 flex flex-col justify-center">
-                                    <div class="text-xs text-green-400 font-medium mb-1">
+                                    <div class="text-xs text-blue-400 font-medium mb-1">
                                         ● Playing now
                                     </div>
 
@@ -214,11 +214,11 @@
                     `;
 
                     button.classList.remove("text-gray-400", "text-gray-600");
-                    button.classList.add("text-green-400");
+                    button.classList.add("text-blue-400");
                 } catch (error) {
                     console.error("ListenBrainz:", error);
 
-                    button.classList.remove("text-green-400");
+                    button.classList.remove("text-blue-400");
                     button.classList.add("text-gray-600");
 
                     content.innerHTML = `
@@ -332,7 +332,7 @@
                                 id="listenbrainz-button"
                                 type="button"
                                 onclick="toggleListenBrainz(event)"
-                                class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-900/70 border border-gray-800 text-gray-400 hover:text-green-400 shadow-xl backdrop-blur-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-900/70 border border-gray-800 text-gray-400 hover:text-blue-400 shadow-xl backdrop-blur-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 aria-label="ListenBrainz status"
                                 aria-expanded="false"
                             >
@@ -381,7 +381,7 @@
                                         href="https://listenbrainz.org"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="text-gray-500 hover:text-green-400 transition-colors"
+                                        class="text-gray-500 hover:text-blue-400 transition-colors"
                                     >
                                         via ListenBrainz
                                     </a>
