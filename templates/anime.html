@@ -1,18 +1,15 @@
 {% extends "base.html" %} {% block title %}Anime Tracker{% endblock title %} {%
-block head_extra %} {% if page.description %}
+block head_extra %}
+<link rel="preconnect" href="https://note.coolans.dev" />
+{% if page.description %}
 <meta name="description" content="{{ page.description | safe }}" />
 {% endif %} {% endblock head_extra %} {% block content %}
 <h1 class="text-4xl md:text-5xl font-extrabold text-white text-center">
     Anime Tracker
 </h1>
 
-<div class="mt-6 mx-4 text-lg text-gray-300">
+<div class="mt-6 mx-1 md:mx-2 text-lg text-gray-300">
     <hr class="border-gray-700 my-4" />
-
-    <!-- ========================= -->
-    <!-- TRACK -->
-    <!-- ========================= -->
-
     <section class="mb-12">
         <div class="flex justify-center">
             <a
@@ -31,11 +28,6 @@ block head_extra %} {% if page.description %}
     </section>
 
     <hr class="border-gray-700 my-4" />
-
-    <!-- ========================= -->
-    <!-- COMPLETED -->
-    <!-- ========================= -->
-
     <section>
         <div class="flex justify-center">
             <a
@@ -57,7 +49,7 @@ block head_extra %} {% if page.description %}
 <script>
     const API_BASE = "https://note.coolans.dev/api/v1/memos";
 
-    async function loadAnime() {
+    (async () => {
         const trackContainer = document.getElementById("track-table");
         const completedContainer = document.getElementById("completed-table");
 
@@ -79,7 +71,6 @@ block head_extra %} {% if page.description %}
 
             const [trackData, completedData] = await Promise.all([
                 trackResponse.json(),
-
                 completedResponse.json(),
             ]);
 
@@ -103,15 +94,11 @@ block head_extra %} {% if page.description %}
             trackContainer.innerHTML = "";
 
             const trackTable = document.createElement("div");
-
             trackTable.className =
                 "relative overflow-x-auto shadow-md rounded-lg";
-
             const trackTableElement = document.createElement("table");
-
             trackTableElement.className =
                 "w-full text-sm text-left text-gray-400";
-
             trackTableElement.innerHTML = `
                 <thead class="text-xs text-gray-400 uppercase bg-gray-700">
                     <tr>
@@ -127,28 +114,18 @@ block head_extra %} {% if page.description %}
             `;
 
             const trackBody = document.createElement("tbody");
-
             trackRows.forEach((row) => {
                 const tr = document.createElement("tr");
-
                 tr.className =
                     "odd:bg-gray-900 even:bg-gray-800 border-b border-gray-700";
-
                 const name = document.createElement("td");
-
                 name.className = "px-6 py-4";
-
                 name.textContent = row.name;
-
                 const episode = document.createElement("td");
-
                 episode.className = "px-6 py-4";
-
                 episode.textContent = row.episode;
-
                 tr.appendChild(name);
                 tr.appendChild(episode);
-
                 trackBody.appendChild(tr);
             });
 
@@ -166,119 +143,78 @@ block head_extra %} {% if page.description %}
                     if (match) {
                         return {
                             name: match[1].trim(),
-
                             season: match[2],
-
                             status: "Watched",
                         };
                     }
 
-                    /*
-                     * No season number.
-                     *
-                     * Means anime is synced
-                     * with manga.
-                     */
-
-                    return {
-                        name: line,
-
-                        season: "-",
-
-                        status: "Finished",
-                    };
+                    return { name: line, season: "-", status: "Finished" };
                 });
-
-            /*
-             * Build completed table.
-             */
 
             completedContainer.innerHTML = "";
 
             const completedTable = document.createElement("div");
-
             completedTable.className =
                 "relative overflow-x-auto shadow-md rounded-lg";
-
             const completedTableElement = document.createElement("table");
-
             completedTableElement.className =
                 "w-full text-sm text-left text-gray-400";
-
             completedTableElement.innerHTML = `
-            <thead class="text-xs text-gray-400 uppercase bg-gray-700">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        Anime
-                    </th>
+                <thead class="text-xs text-gray-400 uppercase bg-gray-700">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Anime
+                        </th>
 
-                    <th scope="col" class="px-6 py-3">
-                        Season
-                    </th>
+                        <th scope="col" class="px-6 py-3">
+                            Season
+                        </th>
 
-                    <th scope="col" class="px-6 py-3">
-                        Status
-                    </th>
-                </tr>
-            </thead>
-        `;
+                        <th scope="col" class="px-6 py-3">
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+            `;
 
             const completedBody = document.createElement("tbody");
-
             completedRows.forEach((row) => {
                 const tr = document.createElement("tr");
-
                 tr.className =
                     "odd:bg-gray-900 even:bg-gray-800 border-b border-gray-700";
-
                 const name = document.createElement("td");
-
                 name.className = "px-6 py-4";
-
                 name.textContent = row.name;
-
                 const season = document.createElement("td");
-
                 season.className = "px-6 py-4";
-
                 season.textContent = row.season;
-
                 const status = document.createElement("td");
-
                 status.className = "px-6 py-4";
-
                 status.textContent = row.status;
-
                 tr.appendChild(name);
                 tr.appendChild(season);
                 tr.appendChild(status);
-
                 completedBody.appendChild(tr);
             });
 
             completedTableElement.appendChild(completedBody);
-
             completedTable.appendChild(completedTableElement);
-
             completedContainer.appendChild(completedTable);
         } catch (error) {
             console.error("Failed to load anime:", error);
-
             trackContainer.innerHTML = `
-            <p class="text-red-400">
-                Failed to load tracking data.
-            </p>
-        `;
+                <p class="text-red-400">
+                    Failed to load tracking data.
+                </p>
+            `;
 
             completedContainer.innerHTML = `
-            <p class="text-red-400">
-                Failed to load completed anime.
-            </p>
-        `;
+                <p class="text-red-400">
+                    Failed to load completed anime.
+                </p>
+            `;
         }
-    }
-
-    loadAnime();
+    })();
 </script>
 
 {% endblock content %}
