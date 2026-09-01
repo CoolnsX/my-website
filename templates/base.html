@@ -88,6 +88,8 @@
             });
         </script>
         <script>
+            let lastRecordingMbid = null;
+            let lastStatus = null;
             async function updateListenBrainz() {
                 const content = document.getElementById("listenbrainz-content");
                 const button = document.getElementById("listenbrainz-button");
@@ -104,6 +106,10 @@
                     const listen = data?.payload?.listens?.[0];
 
                     if (!listen?.playing_now) {
+                        if (lastStatus === "not-playing") return;
+                        lastStatus = "not-playing";
+                        lastRecordingMbid = null;
+
                         button.classList.remove("text-green-400");
                         button.classList.add("text-gray-400");
 
@@ -142,6 +148,17 @@
 
                     const track = listen.track_metadata;
                     const info = track.additional_info || {};
+                    const recordingMbid = info.recording_mbid;
+
+                    if (
+                        lastStatus === "playing" &&
+                        recordingMbid === lastRecordingMbid
+                    ) {
+                        return;
+                    }
+
+                    lastStatus = "playing";
+                    lastRecordingMbid = recordingMbid;
 
                     const name = escapeHtml(
                         track.track_name || "Unknown track",
@@ -153,8 +170,17 @@
 
                     const cover = `https://coverartarchive.org/release-group/${info.release_group_mbid}/front-250`;
 
+                    const trackUrl = recordingMbid
+                        ? `https://listenbrainz.org/track/${recordingMbid}`
+                        : "#";
+
                     content.innerHTML = `
-                        <div class="p-4">
+                        <a
+                            href="${trackUrl}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="block p-4 hover:bg-gray-800/40 transition-colors"
+                        >
                             <div class="flex gap-4">
                                 <img
                                     src="${cover}"
@@ -184,7 +210,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     `;
 
                     button.classList.remove("text-gray-400", "text-gray-600");
@@ -242,6 +268,9 @@
             href="/assets/background.webp"
             type="image/webp"
         />
+        <link rel="preconnect" href="https://api.listenbrainz.org" />
+        <link rel="preconnect" href="https://coverartarchive.org" />
+        <link rel="preconnect" href="https://archive.org" />
         <style>
             .bg-image {
                 background-image: url("/assets/background.webp");

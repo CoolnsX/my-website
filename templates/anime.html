@@ -45,7 +45,7 @@ block head_extra %} {% if page.description %}
 </div>
 
 <script>
-    const API_BASE = "{{ config.base_url }}/api";
+    const API_BASE = "{{ get_url(path='api') }}";
 
     (async () => {
         const trackContainer = document.getElementById("track-table");
