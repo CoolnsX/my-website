@@ -52,9 +52,10 @@ block head_extra %} {% if page.description %}
         const completedContainer = document.getElementById("completed-table");
 
         try {
+	    const timestamp = Date.now();
             const [trackResponse, completedResponse] = await Promise.all([
-                fetch(`${API_BASE}/anime-track`),
-                fetch(`${API_BASE}/anime-completed`),
+		fetch(`${API_BASE}/anime-track?t=${timestamp}`),
+                fetch(`${API_BASE}/anime-completed?t=${timestamp}`),
             ]);
 
             if (!trackResponse.ok) {

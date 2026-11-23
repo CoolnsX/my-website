@@ -106,7 +106,7 @@
                         if (!listen?.playing_now) {
                             wasPlaying = false;
 
-                            status.textContent = "Not playing";
+                            status.textContent = "Not Listening";
                             status.className = "font-medium text-gray-300";
 
                             if (trackName.textContent)
@@ -129,7 +129,7 @@
                         currentMbid = mbid;
                         wasPlaying = true;
 
-                        status.textContent = "● Playing now";
+                        status.textContent = "● Listening to";
                         status.className =
                             "text-xs text-blue-400 font-medium mb-1";
 
